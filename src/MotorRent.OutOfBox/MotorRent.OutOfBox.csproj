@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Queues\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.4.2" />
+    <PackageReference Include="Rebus.RabbitMq" Version="10.0.2" />
+    <PackageReference Include="Rebus.ServiceProvider" Version="10.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MotorRent.Application\MotorRent.Application.csproj" />
+    <ProjectReference Include="..\MotorRent.Domain\MotorRent.Domain.csproj" />
+    <ProjectReference Include="..\MotorRent.Infrastructure\MotorRent.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

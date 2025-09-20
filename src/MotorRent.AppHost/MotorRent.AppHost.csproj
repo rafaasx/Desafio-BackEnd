@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Sdk Name="Aspire.AppHost.Sdk" Version="9.0.0" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAspireHost>true</IsAspireHost>
+    <UserSecretsId>52a31925-f814-4818-94cf-71b2bf379381</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MotorRent.ApiService\MotorRent.ApiService.csproj" />
+    <ProjectReference Include="..\MotorRent.Web\MotorRent.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.4.2" />
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="9.4.2" />
+    <PackageReference Include="Aspire.Hosting.RabbitMQ" Version="9.4.2" />
+    <PackageReference Include="Aspire.Hosting.Redis" Version="9.4.2" />
+  </ItemGroup>
+
+</Project>
