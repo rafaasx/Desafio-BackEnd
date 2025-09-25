@@ -2,12 +2,15 @@
 
 namespace MotorRent.Domain.Interfaces
 {
-    public interface IRepositoryBase<T> where T : class
+    public interface IRepositoryBase<TEntity> where TEntity : class
     {
-        IQueryable<T> Query();
-        Task AddAsync(T entity);
+        IQueryable<TEntity> Query();
+        Task AddAsync(TEntity entity);
         Task<bool> ExistsAsync(string id);
-        Task<bool> AnyAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default);
+        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
         Task<int> SaveChangesAsync();
+        Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
+        Task<TEntity?> GetByIdAsync(string id);
+        Task DeleteAsync(string id);
     }
 }

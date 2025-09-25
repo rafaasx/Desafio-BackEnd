@@ -7,11 +7,13 @@ var rabbitMq = builder.AddRabbitMQ("RabbitMq", password: rabbitMqPassword)
     .WithVolume("/etc/rabbitmq")
     .WithManagementPlugin();
 
-var sqlServerPassword = builder.AddParameter("PostgresInstancePassword", true);
-var sqlServer = builder.AddPostgres("PostgresInstance", sqlServerPassword)
+var postgresPassword = builder.AddParameter("PostgresInstancePassword", true);
+var postgresPort = int.Parse(builder.AddParameter("PostgresInstancePort", true).Resource.Value);
+
+var postgres = builder.AddPostgres("PostgresInstance", postgresPassword, port: postgresPort)
     .WithDataVolume();
 
-var database = sqlServer.AddDatabase("MotorRent", "MotorRent");
+var database = postgres.AddDatabase("MotorRent", "MotorRent");
 
 var apiService = builder.AddProject<Projects.MotorRent_ApiService>("apiservice")
     .WithReference(rabbitMq)

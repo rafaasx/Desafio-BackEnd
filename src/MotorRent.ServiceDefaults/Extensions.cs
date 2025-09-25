@@ -28,9 +28,9 @@ public static class Extensions
             // Turn on resilience by default
             http.AddStandardResilienceHandler(options =>
             {
-                options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(10);
-                options.TotalRequestTimeout.Timeout = TimeSpan.FromSeconds(10);
-                options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(20); // Needs to be at least the double the AttemptTimeout
+                options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(30);
+                options.TotalRequestTimeout.Timeout = TimeSpan.FromSeconds(60);
+                options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(120); // Needs to be at least the double the AttemptTimeout
             });
 
             // Turn on service discovery by default

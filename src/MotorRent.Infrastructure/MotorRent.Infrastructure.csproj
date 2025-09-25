@@ -7,18 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.4.2" />
+    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.2.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.20">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Rebus.RabbitMq" Version="10.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MotorRent.Application\MotorRent.Application.csproj" />
     <ProjectReference Include="..\MotorRent.Domain\MotorRent.Domain.csproj" />
+    <ProjectReference Include="..\MotorRent.OutOfBox\MotorRent.OutOfBox.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Messaging\MessageBus\" />
-    <Folder Include="Messaging\Producers\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

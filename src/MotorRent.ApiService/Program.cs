@@ -1,12 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MotorRent.ApiService.Filters;
+using MotorRent.ApiService.Middlewares;
+using MotorRent.Application;
+using MotorRent.Application.DTO.Entregador;
+using MotorRent.Application.DTO.Moto;
 using MotorRent.Infrastructure;
 using MotorRent.OutOfBox.Database;
 using MotorRent.OutOfBox.Queues;
-using MotorRent.OutOfBox.Repositories;
-using MotorRent.OutOfBox.Services;
 using MotorRent.ServiceDefaults;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,20 +23,30 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
+    c.EnableAnnotations();
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "MotoRent API",
         Version = "v1",
         Description = "API para gestão de locação de motos",
     });
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
 });
 builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
 builder.Services.AddPostgresDbContext<ApplicationDbContext>(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
+builder.Services.AddInfraServices();
 builder.Services.AddValidators();
-builder.Services.AddBus(builder.Configuration);
+builder.Services.AddConsumers();
+
+builder.Services.AddBus(builder.Configuration, new SubscriptionBuilder()
+                    .Add<CreateMotoDTO>()
+                    .Add<CreateEntregadorDTO>()
+                    .Add<Created2024MotoDTO>());
 
 
 
@@ -46,6 +59,7 @@ using (var scope = app.Services.CreateScope())
 
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {

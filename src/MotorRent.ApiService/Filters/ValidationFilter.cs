@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using MotorRent.Domain.Constants;
 
 namespace MotorRent.ApiService.Filters
 {
@@ -30,7 +31,7 @@ namespace MotorRent.ApiService.Filters
                     {
                         context.Result = new BadRequestObjectResult(new
                         {
-                            Mensagem = string.Join(";", result.Errors.Select(e => e.ErrorMessage))
+                            Mensagem = Messages.InvalidData
                         });
                         return;
                     }

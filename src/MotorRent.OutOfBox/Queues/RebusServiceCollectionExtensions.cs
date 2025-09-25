@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MotorRent.Application.DTO;
 using Rebus.Config;
 using System.Reflection;
 
@@ -10,28 +9,22 @@ namespace MotorRent.OutOfBox.Queues
     {
         public static IServiceCollection AddBus(
             this IServiceCollection services,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            SubscriptionBuilder subscriptionBuilder)
         {
-            var subscriptionBuilder = new SubscriptionBuilder()
-            .Add<MotoDTO>();
             services.AutoRegisterHandlersFromAssembly(Assembly.GetEntryAssembly());
             services.AddScoped<IMessageSender, RebusMessageSender>();
+
 
             services.AddRebus(c => c
                 .Transport(t =>
                 {
-                    t.UseRabbitMq(configuration.GetConnectionString("RabbitMq"), "MotoRent");
+                    t.UseRabbitMq(configuration.GetConnectionString("RabbitMq"), "MotoRent.Queue");
                 }),
                 onCreated: async bus =>
                 {
-                    if (subscriptionBuilder != null)
-                    {
-                        foreach (var type in subscriptionBuilder.TypesToSubscribe)
-                        {
-                            await bus.Subscribe(type);
-                        }
-                    }
-
+                    foreach (var type in subscriptionBuilder.TypesToSubscribe)
+                        await bus.Subscribe(type);
                 });
 
             return services;
@@ -41,11 +34,9 @@ namespace MotorRent.OutOfBox.Queues
     public class SubscriptionBuilder
     {
         internal List<Type> TypesToSubscribe { get; private set; } = [];
-
         public SubscriptionBuilder Add<T>()
         {
             TypesToSubscribe.Add(typeof(T));
-
             return this;
         }
     }

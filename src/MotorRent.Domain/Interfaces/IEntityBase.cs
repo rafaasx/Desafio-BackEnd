@@ -2,6 +2,6 @@
 {
     public interface IEntityBase
     {
-        string Identifier { get; }
+        string Identificador { get; }
     }
 }

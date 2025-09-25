@@ -72,5 +72,29 @@ https://app.swaggerhub.com/apis-docs/Mottu/mottu_desafio_backend/1.0.0
 - Código limpo e organizado
 - Logs bem estruturados
 - Seguir convenções utilizadas pela comunidade
-  
 
+# Considerações  
+## Arquitetura
+- Padrão Clean Architecture com 3 camadas (Domain, Application e Infrasturcture) + padrão do .NET ASPIRE
+- FluentValidation para validação das DTOs
+- Testes unitários e integrados utilizando xUnit e Moq
+- API documentada com swagger
+- Entity Framework Core com Postgres
+- Open Telemetry para rastreamento distribuído
+- RabbitMQ para mensageria
+- Rebus como barramento de eventos
+
+## Melhorias
+- O tatamento de erro da API de exemplonão deixa claro o motivo do erro, poderia ser melhor detalhada
+- Seria interessante criar um envelopamento das mensagens de sucesso e erro para manter um padrão de respostas, bem como evitar o uso exceptions
+- O padrão camelCase é mais utilziado na comunidade na modelagem das entidades
+- Para atualização da cnh, poderia ser utilizado o verbo PUT com o padrão multipart/form-data para fazer o stream dos dados do arquivo o que reduz o uso de memória e permite trabalhar com arquivos grandes
+## MIGRATION
+- Migration automática ao iniciar a aplicação
+- Comando para criar uma nova migration
+```dotnet ef migrations add MitationName --context ApplicationDbContext --project MotorRent.Infrastructure --startup-project MotorRent.ApiService```
+## Como Executar
+- Iniciar o docker desktop
+- Definir o projeto MotorRent.AppHost como padrão 
+- Iniciar o modo debug
+- Através do .net Aspire é possível acessar a URL da API

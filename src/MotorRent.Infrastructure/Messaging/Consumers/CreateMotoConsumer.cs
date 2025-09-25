@@ -1,16 +1,26 @@
-﻿using MotorRent.Application.DTO;
+﻿using Microsoft.Extensions.Logging;
+using MotorRent.Application.DTO.Moto;
 using MotorRent.Application.Services.Interfaces;
-using MotorRent.Domain.Entities;
 using Rebus.Handlers;
+using System.Diagnostics;
 
-namespace MotorRent.Application.Workers
+namespace MotorRent.Infrastructure.Messaging.Consumers
 {
-    public class CreateMotoConsumer(IMotoService motoService) : IHandleMessages<MotoDTO>
+    public class CreateMotoConsumer(ILogger<CreateMotoConsumer> logger, IMotoService motoService) : IHandleMessages<CreateMotoDTO>
     {
-        public async Task Handle(MotoDTO message)
+        public async Task Handle(CreateMotoDTO message)
         {
-            await motoService.AddAsync(new Moto(message.identificador, message.modelo, message.ano, message.placa));
-            await motoService.SaveChangesAsync();
+            logger.LogInformation("Processando requisição {TraceId}", Activity.Current?.TraceId);
+            try
+            {
+                await motoService.CreateAsync(message);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Erro ao processar a moto {message.identificador}");
+                throw;
+            }
+            logger.LogInformation("Finalizado requisição {TraceId}", Activity.Current?.TraceId);
         }
     }
 }

@@ -14,8 +14,10 @@ namespace MotorRent.Application.Services
         }
 
         public Task AddAsync(TEntity entity) => Repository.AddAsync(entity);
-
+        public Task<TEntity?> GetByIdAsync(string id) => Repository.GetByIdAsync(id);
+        public virtual Task DeleteAsync(string id) => Repository.DeleteAsync(id);
         public IQueryable<TEntity> Query() => Repository.Query();
         public Task<int> SaveChangesAsync() => Repository.SaveChangesAsync();
+        public Task<bool> IdExistsAsync(string id, CancellationToken token) => Repository.AnyAsync(a => a.Identificador == id, token);
     }
 }
